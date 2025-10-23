@@ -16,7 +16,7 @@ export class CreateUserUseCase {
     const { name, email, password, role } = dto;
 
     if(!name || !email || !password || !role) {
-      throw new BadRequestException('All fields are required!');
+      throw new BadRequestException('Some fields are missing. Please check and try again.');
     }
     
     // Verifica se usuário já existe
