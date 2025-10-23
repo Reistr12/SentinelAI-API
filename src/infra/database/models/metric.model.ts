@@ -1,8 +1,8 @@
 import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
-import { Device } from './device.model';
+import { DeviceModel } from './device.model';
 
 @Table({ tableName: 'metrics', timestamps: false })
-export class Metric extends Model<Metric> {
+export class MetricModel extends Model<MetricModel> {
   @Column({
     type: DataType.UUID,
     defaultValue: DataType.UUIDV4,
@@ -10,7 +10,7 @@ export class Metric extends Model<Metric> {
   })
   declare id: string;
 
-  @ForeignKey(() => Device)
+  @ForeignKey(() => DeviceModel)
   @Column({ type: DataType.UUID, allowNull: false })
   declare deviceId: string;
 
@@ -23,6 +23,6 @@ export class Metric extends Model<Metric> {
   @Column({ type: DataType.DATE, defaultValue: DataType.NOW })
   declare timestamp: Date;
 
-  @BelongsTo(() => Device)
-  declare device: Device;
+  @BelongsTo(() => DeviceModel)
+  declare device: DeviceModel;
 }

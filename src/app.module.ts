@@ -2,24 +2,30 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { User } from './infra/database/models/user.model';
-import { Device } from './infra/database/models/device.model';
-import { Metric } from './infra/database/models/metric.model';
-import { Alert } from './infra/database/models/alert.model';
-import { AlertSetting } from './infra/database/models/alert-setting.model';
+import { UserModel } from './infra/database/models/user.model';
+import { DeviceModel } from './infra/database/models/device.model';
+import { MetricModel } from './infra/database/models/metric.model';
+import { AlertModel } from './infra/database/models/alert.model';
+import { AlertSettingModel } from './infra/database/models/alert-setting.model';
+import { UserModule } from './presentation/controllers/users/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [SequelizeModule.forRoot({
+  imports: [
+    SequelizeModule.forRoot({
     dialect: 'postgres',
-    host: process.env.DB_HOST ?? 'localhost',
-    port: parseInt(process.env.DB_PORT ?? '5432', 10),
-    username: process.env.DB_USER ?? 'postgres',
-    password: process.env.DB_PASSWORD ?? '',
-    database: process.env.DB_NAME ?? 'postgres',
-  models: [User, Device, Metric, Alert, AlertSetting], 
+    host: 'localhost',
+    port: 5432,
+    username: 'sentinel_user',
+    password: 'sentinel_pass',
+    database: 'sentinel_db',
+    models: [UserModel, DeviceModel, MetricModel, AlertModel, AlertSettingModel],
     autoLoadModels: true,
     synchronize: true,
-  })],
+}),
+    UserModule,
+    AuthModule
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

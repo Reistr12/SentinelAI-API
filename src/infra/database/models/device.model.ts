@@ -1,15 +1,15 @@
 import { Model } from "sequelize-typescript";
 import { BelongsTo, Column, DataType, ForeignKey, HasMany, Table } from "sequelize-typescript";
-import { User } from "./user.model";
-import { AlertSetting } from "./alert-setting.model";
-import { Alert } from "./alert.model";
-import { Metric } from "./metric.model";
+import { UserModel } from "./user.model";
+import { AlertSettingModel } from "./alert-setting.model";
+import { AlertModel } from "./alert.model";
+import { MetricModel } from "./metric.model";
 
 @Table({
     tableName: "devices",
     timestamps: true,
 })
-export class Device extends Model<Device> {
+export class DeviceModel extends Model<DeviceModel> {
     @Column({
         type: DataType.UUID,
         defaultValue: DataType.UUIDV4,
@@ -18,7 +18,7 @@ export class Device extends Model<Device> {
     })
     declare id: string
 
-    @ForeignKey(() => User)
+    @ForeignKey(() => UserModel)
     @Column({
         type: DataType.UUID,
         allowNull: false,
@@ -41,16 +41,16 @@ export class Device extends Model<Device> {
     @Column({ type: DataType.TEXT })
     declare description: string;
 
-    @BelongsTo(() => User)
-    declare user: User;
+    @BelongsTo(() => UserModel)
+    declare user: UserModel;
 
-    @HasMany(() => Metric)
-    declare metrics: Metric[];
+    @HasMany(() => MetricModel)
+    declare metrics: MetricModel[];
 
-    @HasMany(() => Alert)
-    declare alerts: Alert[];
+    @HasMany(() => AlertModel)
+    declare alerts: AlertModel[];
 
-    @HasMany(() => AlertSetting)
-    declare alertSettings: AlertSetting[];
+    @HasMany(() => AlertSettingModel)
+    declare alertSettings: AlertSettingModel[];
 
 }

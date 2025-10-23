@@ -1,15 +1,19 @@
 import { Column, DataType, Table, Model } from "sequelize-typescript";
 
 export enum Role {
-  USER = 'USER',
-  ADMIN = 'ADMIN',
+  SUPER_ADMIN = 'SUPER_ADMIN', // controla o sistema inteiro (nível global)
+  COMPANY_ADMIN = 'COMPANY_ADMIN', // administra dispositivos e usuários da empresa
+  TECHNICIAN = 'TECHNICIAN', // configura e monitora dispositivos
+  ANALYST = 'ANALYST', // analisa métricas e alertas
+  USER = 'USER', // visualiza dados próprios
 }
+
 
 @Table({
   tableName: "users",
   timestamps: true,
 })
-export class User extends Model<User> {
+export class UserModel extends Model<UserModel> {
     @Column({
         type: DataType.UUID,
         defaultValue: DataType.UUIDV4,

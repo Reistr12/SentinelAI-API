@@ -1,6 +1,6 @@
 // models/alert.model.ts
 import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
-import { Device } from './device.model';
+import { DeviceModel } from './device.model';
 
 export enum AlertStatus {
   PENDING = 'PENDING',
@@ -9,7 +9,7 @@ export enum AlertStatus {
 }
 
 @Table({ tableName: 'alerts', timestamps: true })
-export class Alert extends Model<Alert> {
+export class AlertModel extends Model<AlertModel> {
   @Column({
     type: DataType.UUID,
     defaultValue: DataType.UUIDV4,
@@ -17,7 +17,7 @@ export class Alert extends Model<Alert> {
   })
   declare id: string;
 
-  @ForeignKey(() => Device)
+  @ForeignKey(() => DeviceModel)
   @Column({ type: DataType.UUID, allowNull: false })
   declare deviceId: string;
 
@@ -30,6 +30,6 @@ export class Alert extends Model<Alert> {
   @Column({ type: DataType.ENUM('PENDING', 'SENT', 'ACKNOWLEDGED'), defaultValue: AlertStatus.PENDING })
   declare status: AlertStatus;
 
-  @BelongsTo(() => Device)
-  declare device: Device;
+  @BelongsTo(() => DeviceModel)
+  declare device: DeviceModel;
 }

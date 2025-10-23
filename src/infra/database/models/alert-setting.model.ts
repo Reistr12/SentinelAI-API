@@ -1,9 +1,9 @@
 // models/alert-setting.model.ts
 import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
-import { Device } from './device.model';
+import { DeviceModel } from './device.model';
 
 @Table({ tableName: 'alert_settings', timestamps: true })
-export class AlertSetting extends Model<AlertSetting> {
+export class AlertSettingModel extends Model<AlertSettingModel> {
   @Column({
     type: DataType.UUID,
     defaultValue: DataType.UUIDV4,
@@ -11,7 +11,7 @@ export class AlertSetting extends Model<AlertSetting> {
   })
   declare id: string;
 
-  @ForeignKey(() => Device)
+  @ForeignKey(() => DeviceModel)
   @Column({ type: DataType.UUID, allowNull: false })
   declare deviceId: string;
 
@@ -24,6 +24,6 @@ export class AlertSetting extends Model<AlertSetting> {
   @Column({ type: DataType.ENUM('>', '<'), defaultValue: '>' })
   declare comparison: string;
 
-  @BelongsTo(() => Device)
-  declare device: Device;
+  @BelongsTo(() => DeviceModel)
+  declare device: DeviceModel;
 }
