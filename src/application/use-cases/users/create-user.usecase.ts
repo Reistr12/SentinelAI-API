@@ -14,9 +14,13 @@ export class CreateUserUseCase {
 
   async execute(dto: CreateUserDto) {
     const { name, email, password, role } = dto;
+
+    if(!name || !email || !password || !role) {
+      throw new BadRequestException('Some fields are missing. Please check and try again.');
+    }
     
     // Verifica se usuário já existe
-    const userAlreadyExists = false // await this.userRepository.existsByEmail(email);
+    const userAlreadyExists = await this.userRepository.findByEmail(email);
 
     if (userAlreadyExists) {
       throw new BadRequestException('User with this email already exists');
