@@ -4,6 +4,7 @@ import { UserModel } from "./user.model";
 import { AlertSettingModel } from "./alert-setting.model";
 import { AlertModel } from "./alert.model";
 import { MetricModel } from "./metric.model";
+import { ServerModel } from "./create-server.model";
 
 @Table({
     tableName: "devices",
@@ -25,6 +26,14 @@ export class DeviceModel extends Model<DeviceModel> {
     })
     declare userId: string
 
+    // Foreign key to ServerModel (optional)
+    @ForeignKey(() => ServerModel)
+    @Column({
+        type: DataType.UUID,
+        allowNull: true,
+    })
+    declare serverId: string | null
+
     @Column({
         type: DataType.STRING,
         allowNull: false,
@@ -43,6 +52,9 @@ export class DeviceModel extends Model<DeviceModel> {
 
     @BelongsTo(() => UserModel)
     declare user: UserModel;
+
+    @BelongsTo(() => ServerModel)
+    declare server: ServerModel;
 
     @HasMany(() => MetricModel)
     declare metrics: MetricModel[];
