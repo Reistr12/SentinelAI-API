@@ -1,7 +1,7 @@
 import { QueryInterface, DataTypes } from 'sequelize';
 
 export async function up(queryInterface: QueryInterface) {
-  await queryInterface.createTable('REPLACE_TABLE_NAME', {
+  await queryInterface.createTable('servers', {
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
@@ -13,6 +13,10 @@ export async function up(queryInterface: QueryInterface) {
       allowNull: false,
     },
     name: {
+      type: DataTypes.STRING(45),
+      allowNull: false,
+    },
+    devices: {
       type: DataTypes.STRING(45),
       allowNull: false,
     },
@@ -30,5 +34,5 @@ export async function up(queryInterface: QueryInterface) {
 }
 
 export async function down(queryInterface: QueryInterface) {
-  await queryInterface.dropTable('REPLACE_TABLE_NAME');
+  await queryInterface.dropTable('servers');
 }

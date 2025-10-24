@@ -13,12 +13,8 @@ export class CreateServerUseCase {
   ) {}
 
   async execute(dto: CreateServerDto) {
-    const { ip, name } = dto;
+    const { ip, name, devices } = dto;
 
-    if( !ip || !name ) {
-      throw new BadRequestException('Some fields are missing. Please check and try again.');
-    }
-    
     // Verifica se servidor já existe
     const ipAlreadyExists = await this.serverRepository.findByIp(ip);
 
@@ -29,7 +25,7 @@ export class CreateServerUseCase {
     const newServer = new ServerEntity(
       {
         name,
-        ip
+        ip,
       },
       randomUUID(),
     );

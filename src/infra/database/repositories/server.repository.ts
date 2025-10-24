@@ -9,27 +9,33 @@ export class ServerRepository implements IServerRepository {
     constructor(
         @InjectModel(ServerModel)
         private serverModel: typeof ServerModel
-    ) {}
+    ) { }
 
     async create(data: ServerEntity): Promise<ServerEntity | null> {
         try {
-            const serverData = {
+            const serverData: Partial<ServerModel> = {
                 ip: data.ip,
                 name: data.name,
-            } as any;
+                devices: '',  // Valor padrão vazio
+            };
 
             if (data.id) {
                 serverData.id = data.id;
             }
 
-            const createdServer = await this.serverModel.create(serverData);
+            const createdServer = await this.serverModel.create(serverData as any);
+
+            if (!createdServer) {
+                throw new Error('Failed to create server - no data returned');
+            }
 
             return new ServerEntity({
                 ip: createdServer.ip,
                 name: createdServer.name,
             }, createdServer.id);
         } catch (error) {
-            return null;
+            console.error('Error creating server:', error);
+            throw error;
         }
     }
 
@@ -38,10 +44,13 @@ export class ServerRepository implements IServerRepository {
     ): Promise<ServerEntity[]> {
         const where = filter?.name ? { name: filter.name } : {};
         const servers = await this.serverModel.findAll({ where });
-        
+
         return servers.map(server => new ServerEntity({
             ip: server.ip,
             name: server.name,
+            devices: Array.isArray(server.devices)
+                ? server.devices.map((device: any) => typeof device === "string" ? device : device.id)
+                : undefined,
         }, server.id));
     }
 
@@ -52,16 +61,22 @@ export class ServerRepository implements IServerRepository {
         return new ServerEntity({
             ip: server.ip,
             name: server.name,
+            devices: Array.isArray(server.devices)
+                ? server.devices.map((device: any) => typeof device === "string" ? device : device.id)
+                : undefined,
         }, server.id);
     }
 
     async findByIp(ip: string): Promise<ServerEntity | null> {
         const server = await this.serverModel.findOne({ where: { ip } });
         if (!server) return null;
-        
+
         return new ServerEntity({
             ip: server.ip,
             name: server.name,
+            devices: Array.isArray(server.devices)
+                ? server.devices.map((device: any) => typeof device === "string" ? device : device.id)
+                : undefined,
         }, server.id);
     }
 
@@ -69,11 +84,23 @@ export class ServerRepository implements IServerRepository {
         const server = await this.serverModel.findByPk(id);
         if (!server) return null;
 
-        await server.update(data);
+        // Map devices to the expected format for Sequelize
+        const updateData: any = { ...data };
+        if (data.devices !== undefined) {
+            // If your model expects DeviceModel[] or device IDs, map accordingly
+            updateData.devices = Array.isArray(data.devices)
+                ? data.devices.map((device: any) => typeof device === "string" ? { id: device } : device)
+                : undefined;
+        }
+
+        await server.update(updateData);
 
         return new ServerEntity({
             ip: server.ip,
             name: server.name,
+            devices: Array.isArray(server.devices)
+                ? server.devices.map((device: any) => typeof device === "string" ? device : device.id)
+                : undefined,
         }, server.id);
     }
 

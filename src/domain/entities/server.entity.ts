@@ -9,6 +9,7 @@ export class ServerEntity {
   id?: string;
   ip: string;
   name: string;
+  devices?: string[];
   createdAt?: Date;
   updatedAt?: Date;
 

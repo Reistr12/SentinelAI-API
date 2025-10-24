@@ -1,4 +1,5 @@
-import { Table, Column, Model, DataType } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
+import { DeviceModel } from './device.model';
 
 @Table({ tableName: 'servers', timestamps: true })
 export class ServerModel extends Model<ServerModel> {
@@ -9,9 +10,26 @@ export class ServerModel extends Model<ServerModel> {
   })
   declare id: string;
 
-  @Column({ type: DataType.STRING, allowNull: false, unique: true })
+  @Column({ 
+    type: DataType.STRING(45), 
+    allowNull: false, 
+    unique: true 
+  })
   declare ip: string;
 
-  @Column({ type: DataType.STRING, allowNull: false })
+  @Column({ 
+    type: DataType.STRING(45), 
+    allowNull: false 
+  })
   declare name: string;
+
+  @Column({ 
+    type: DataType.STRING(45), 
+    allowNull: true,
+    defaultValue: ''
+  })
+  declare devices: string;
+
+  @HasMany(() => DeviceModel)
+  devicesList: DeviceModel[];
 }
