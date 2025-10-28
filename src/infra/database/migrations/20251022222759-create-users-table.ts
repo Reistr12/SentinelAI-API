@@ -26,17 +26,17 @@ export async function up(queryInterface: QueryInterface) {
       allowNull: false,
       defaultValue: 'USER',
     },
-    created_at: {
+    createdAt: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
     },
-    updated_at: {
+    updateAt: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
     },
-    deleted_at: {
+    deletedAt: {
       type: DataTypes.DATE,
       allowNull: true,
     },

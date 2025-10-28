@@ -3,7 +3,6 @@ import { BelongsTo, Column, DataType, ForeignKey, HasMany, Table } from "sequeli
 import { UserModel } from "./user.model";
 import { AlertSettingModel } from "./alert-setting.model";
 import { AlertModel } from "./alert.model";
-import { MetricModel } from "./metric.model";
 import { ServerModel } from "./create-server.model";
 
 @Table({
@@ -55,9 +54,6 @@ export class DeviceModel extends Model<DeviceModel> {
 
     @BelongsTo(() => ServerModel)
     declare server: ServerModel;
-
-    @HasMany(() => MetricModel)
-    declare metrics: MetricModel[];
 
     @HasMany(() => AlertModel)
     declare alerts: AlertModel[];
