@@ -1,8 +1,8 @@
-import { Table, Column, Model, DataType, ForeignKey, BelongsTo } from 'sequelize-typescript';
-import { DeviceModel } from './device.model';
+import { Column, DataType, ForeignKey, Model, Table } from 'sequelize-typescript';
+import { ServerModel } from './create-server.model';
 
-@Table({ tableName: 'metrics', timestamps: false })
-export class MetricModel extends Model<MetricModel> {
+@Table({ tableName: 'metrics' })
+export class MetricModel extends Model {
   @Column({
     type: DataType.UUID,
     defaultValue: DataType.UUIDV4,
@@ -10,19 +10,22 @@ export class MetricModel extends Model<MetricModel> {
   })
   declare id: string;
 
-  @ForeignKey(() => DeviceModel)
-  @Column({ type: DataType.UUID, allowNull: false })
-  declare deviceId: string;
+  @ForeignKey(() => ServerModel)
+  @Column({
+    type: DataType.UUID,
+    allowNull: false,
+  })
+  serverId: string;
 
-  @Column({ type: DataType.STRING, allowNull: false })
-  declare type: string; // ex: cpu_usage, memory, temperature
+  @Column({
+    type: DataType.JSONB,
+    allowNull: false,
+  })
+  data: object;
 
-  @Column({ type: DataType.FLOAT, allowNull: false })
-  declare value: number;
-
-  @Column({ type: DataType.DATE, defaultValue: DataType.NOW })
-  declare timestamp: Date;
-
-  @BelongsTo(() => DeviceModel)
-  declare device: DeviceModel;
+  @Column({
+    type: DataType.DATE,
+    allowNull: false,
+  })
+  timestamp: Date;
 }
