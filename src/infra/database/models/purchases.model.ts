@@ -1,13 +1,17 @@
 // purchases.model.ts
 import { Table, Column, Model, DataType } from 'sequelize-typescript';
 
+export enum PurchaseStatus {
+  PENDING = 'PENDING',
+  PAID = 'PAID',
+  CANCELED = 'CANCELED',
+}
 export interface PurchaseCreationAttrs {
-  purchaseId?: string;
   name: string;
   plan: string;
-  amount: number;
+  amount: string;   
   payment: string;
-  status: string;
+  status?: PurchaseStatus; 
   paid_at?: Date | null;
 }
 
@@ -17,21 +21,22 @@ export class PurchaseModel extends Model<PurchaseModel, PurchaseCreationAttrs> {
   declare id: string;
 
   @Column({ type: DataType.STRING, allowNull: false })
-  declare purchaseId: string;
-
-  @Column({ type: DataType.STRING, allowNull: false })
   declare name: string;
 
   @Column({ type: DataType.STRING, allowNull: false })
   declare plan: string;
 
   @Column({ type: DataType.STRING, allowNull: false })
-  declare amount: string; // DECIMAL => string no TS
+  declare amount: string;
 
   @Column({ type: DataType.STRING, allowNull: false })
   declare payment: string;
 
-  @Column({ type: DataType.STRING, allowNull: false })
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+    defaultValue: 'PENDING',
+  })
   declare status: string;
 
   @Column({ type: DataType.DATE, allowNull: true })

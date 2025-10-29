@@ -15,9 +15,9 @@ export interface IPurchasesRepository {
   findAll(filter?: { name?: string }): Promise<PurchasesEntity[]>;
 
   /**
-   * Busca um server pelo ID.
+   * Busca uma compra pelo ID.
    */
-  findByPurchaseId(purchaseId: string): Promise<PurchasesEntity | null>;
+  findByPurchaseId(id: string): Promise<PurchasesEntity | null>;
 
   /**
    * Atualiza um usuário existente.

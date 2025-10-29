@@ -16,7 +16,7 @@ export class CreatePurchasesUseCase {
   async execute(dto: CreatePurchasesDto) {
     const { id, name, plan, amount, status, payment, paid_at  } = dto;
 
-    const idAlreadyExists = await this.purchasesRepository.findById(id);
+    const idAlreadyExists = await this.purchasesRepository.findByPurchaseId(id);
 
     if (idAlreadyExists) {
       throw new BadRequestException('There is already a server registered with this IP address.');
@@ -24,7 +24,6 @@ export class CreatePurchasesUseCase {
 
     const newPurchases = new PurchasesEntity(
       {
-        purchaseId: id,
         name,
         plan,
         amount,

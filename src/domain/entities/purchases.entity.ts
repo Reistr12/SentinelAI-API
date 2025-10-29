@@ -7,7 +7,6 @@
  */ 
 export class PurchasesEntity {
   id?: string;
-  purchaseId: string;
   name: string;
   plan: string;
   status: string;
