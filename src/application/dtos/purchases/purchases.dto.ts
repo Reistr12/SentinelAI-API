@@ -2,13 +2,10 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsEnum, IsNotEmpty, IsString, IsOptional, IsDate, IsEmpty } from "class-validator";
 
 export class CreatePurchasesDto {
-  @ApiProperty({ example: '1', description: 'ID' })
-  @IsEmpty()
-  id: string;
 
   @ApiProperty({ example: '1', description: 'ID of Purchases' })
   @IsEmpty()
-  purchaseId: string;
+  id: string;
 
   @ApiProperty({ example: 'Anonymus', description: 'Person Name' })
   @IsString()
@@ -32,7 +29,7 @@ export class CreatePurchasesDto {
 
   @ApiProperty({ example: 'Pending', description: 'Status of payment' })
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   status: string;
 
   @ApiProperty({ example: '26/10/2025', description: 'Date of payment' })

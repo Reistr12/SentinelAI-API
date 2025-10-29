@@ -8,11 +8,6 @@ export async function up(queryInterface: QueryInterface) {
       primaryKey: true,
       allowNull: false,
     },
-    purchaseId: {
-      type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-      allowNull: false,
-    },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -27,26 +22,27 @@ export async function up(queryInterface: QueryInterface) {
     },
     payment: {
       type: DataTypes.STRING,
-      allowNull: false, // ex: "credit_card", "pix", "boleto"
+      allowNull: false,
     },
     status: {
       type: DataTypes.STRING,
-      allowNull: false, // ex: "pending", "paid", "failed", "refunded"
+      allowNull: false,
+      defaultValue: 'PENDING',
     },
     paid_at: {
-      type: DataTypes.STRING,
-      allowNull: true, // pode ser null até o pagamento ser confirmado
+      type: DataTypes.DATE,
+      allowNull: true,
     },
     refunded_at: {
       type: DataTypes.DATE,
-      allowNull: true, // só é preenchido se houver reembolso
+      allowNull: true,
     },
-    createdAt: {
+    created_at: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,
     },
-    updatedAt: {
+    updated_at: {
       type: DataTypes.DATE,
       allowNull: false,
       defaultValue: DataTypes.NOW,

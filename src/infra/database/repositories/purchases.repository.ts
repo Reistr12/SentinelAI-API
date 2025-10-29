@@ -21,7 +21,7 @@ export class PurchasesRepository implements IPurchasesRepository{
             plan: data.plan,
             amount: data.amount,
             payment: data.payment,
-            status: data.status,
+            status: data.status ?? 'PENDING',
             paid_at: data.paid_at,
         } as any);
         
@@ -39,7 +39,11 @@ export class PurchasesRepository implements IPurchasesRepository{
     }
 
     async update(id: string, data: Partial<PurchasesEntity>): Promise<PurchasesEntity | null> {
-        return null;
+    const purchase = await this.purchaseModel.findByPk(id);
+    if (!purchase) return null;
+
+    await purchase.update(data);
+    return purchase as unknown as PurchasesEntity;
     }
 
     async delete(id: string): Promise<void> {
